@@ -1,4 +1,5 @@
 def provide_info_for_openning(s):
+    confidence = 1.0
     response = []
     p = s["properties"]
     if "DATES" in p:
@@ -30,10 +31,11 @@ def provide_info_for_openning(s):
         Валютные счета открываются только в офисе банка.
             """)
 
-    return "\n".join(response), s
+    return ("\n".join(response), confidence), s
 
 
 def provide_info_for_reservation(s):
+    confidence = 1.0
     response = []
     p = s["properties"]
     if "RATES" in p:
@@ -66,35 +68,36 @@ def provide_info_for_reservation(s):
         Открыть валютный счет Вы можете только при личном обращении в офисе Банка.
             """)
 
-    return "\n".join(response), s
+    return ("\n".join(response), confidence), s
 
 
 def ask_slot(state, params):
+    confidence = 1.0
     if params['slot'] == 'currency':
         state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'currency'})
-        return "В какой валюте вы бы хотели открыть счет?", state
+        return ("В какой валюте вы бы хотели открыть счет?", confidence), state
     elif params['slot'] == 'intent':
         state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'intent'})
-        return "Уточните: вы хотите открыть или зарезервировать счет?", state
+        return ("Уточните: вы хотите открыть или зарезервировать счет?", confidence), state
     elif params['slot'] == 'properties':
         state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'properties'})
         if state["intent"][0] == "RESERVE_ACCOUNT":
-            return f"Какая информация вас интересует: тарифы, комплект документов, анкета или процедура открытия?", state
+            return (f"Какая информация вас интересует: тарифы, комплект документов, анкета или процедура открытия?", confidence), state
         elif state["intent"][0] == "OPEN_ACCOUNT":
-            return f"Какая информация вас интересует: сроки, тарифы, комплект документов, удаленное обслуживание или процедура открытия?", state
+            return (f"Какая информация вас интересует: сроки, тарифы, комплект документов, удаленное обслуживание или процедура открытия?", confidence), state
         else:
-            return "Упс, не знаю как и спросить :(", state
+            return ("Упс, не знаю как и спросить :(", confidence), state
     elif params['slot'] == 'resident':
         state['__COMMANDS__'].append({'command': 'FILL_SLOT_YES_NO', 'slot': 'resident', 'yes': 'RESIDENT', 'no': 'NO_RESIDENT'})
-        return "Уточните, являетесь резидентом или нерезидентом?", state
+        return ("Уточните, являетесь резидентом или нерезидентом?", confidence), state
     elif params['slot'] == 'client_type':
         state['__COMMANDS__'].append({'command': 'FILL_SLOT_YES_NO', 'slot': 'client_type', 'yes': 'INDIVIDUAL', 'no': 'ORGANIZATION'})
-        return "Уточните, вы являетесь физическим или юридическим лицом?", state
+        return ("Уточните, вы являетесь физическим или юридическим лицом?", confidence), state
     elif params['slot'] == 'account_type':
         state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'account_type'})
-        return "Уточните, какой тип счета вы хотите зарезервировать (р/с, ГОЗ, и т.п.)?", state
+        return ("Уточните, какой тип счета вы хотите зарезервировать (р/с, ГОЗ, и т.п.)?", confidence), state
     else:
-        return ("Упс, не знаю как и спросить про [%s] :(" % params['slot']), state
+        return (("Упс, не знаю как и спросить про [%s] :(" % params['slot']), confidence), state
 
 
 def get():
@@ -113,5 +116,5 @@ def get():
          lambda s: ask_slot(s, {'slot': 'account_type'})),
         (lambda s: "OPEN_ACCOUNT" in s["intent"] and s["properties"], provide_info_for_openning),
         (lambda s: "RESERVE_ACCOUNT" in s["intent"] and s["properties"], provide_info_for_reservation),
-        (lambda s: True, lambda s: ("Я вас не понимаю. Спросите, пожалуйста, по другому", s))
+        (lambda s: True, lambda s: (("Я вас не понимаю. Спросите, пожалуйста, по другому", 1.0), s))
     ]

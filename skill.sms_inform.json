@@ -2,7 +2,7 @@
   "deeppavlov_root": ".",
   "chainer": {
     "in": ["text"],
-    "out": ["response"],
+    "out": ["response", "confidence"],
     "pipe": [
       {
         "name": "slotfill_raw",
@@ -25,7 +25,7 @@
         "dst": "#dst",
         "policy": "./policy.sms_inform.py",
         "in": ["state"],
-        "out": ["response"]
+        "out": ["response", "confidence"]
       }
     ]
   },

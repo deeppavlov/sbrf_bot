@@ -49,7 +49,7 @@ class SimplePolicy(Component):
             state = [state[0]]
         self.dst.state = state
         logger.debug(f"Final state: {self.dst.state}")
-        return response
+        return zip(*response)
 
     def _perform_action(self, state):
         s = defaultdict(list)
