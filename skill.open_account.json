@@ -1,0 +1,35 @@
+{
+  "deeppavlov_root": ".",
+  "chainer": {
+    "in": ["text"],
+    "out": ["response"],
+    "pipe": [
+      {
+        "name": "slotfill_raw",
+        "in": ["text"],
+        "out": ["slots"],
+        "return_all": true,
+        "load_path": "./slots/slots.open_account.json",
+        "save_path": "./slots/slots.open_account.json"
+      },
+      {
+        "name": "simple_dst",
+        "id": "dst",
+        "in": ["slots"],
+        "out": ["state"],
+        "commands": "./dst.open_account.py"
+      },
+      {
+        "name": "simple_policy",
+        "dst": "#dst",
+        "policy": "./policy.open_account.py",
+        "in": ["state"],
+        "out": ["response"]
+      }
+    ]
+  },
+  "metadata": {
+    "imports": ["components.dst", "components.policy"]
+  }
+
+}
