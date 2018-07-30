@@ -1,0 +1,19 @@
+{
+  "deeppavlov_root": ".",
+  "chainer": {
+    "in": ["text"],
+    "out": ["intent"],
+    "pipe": [
+      {
+        "name": "slotfill_raw",
+        "in": ["text"],
+        "out": ["intent"],
+        "load_path": "./slots/slots.intents.json",
+        "save_path": "./slots/slots.intents.json"
+      }
+    ]
+  },
+  "metadata": {
+    "imports": ["components.dst"]
+  }
+}
