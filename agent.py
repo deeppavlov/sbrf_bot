@@ -1,8 +1,8 @@
 from deeppavlov.core.commands.infer import build_model_from_config
-from deeppavlov.core.agent import Agent, HighestConfidenceSelector
+from components.agent import Agent, HighestConfidenceSelector
 from deeppavlov.skills.pattern_matching_skill import PatternMatchingSkill
 
-from filter import IntentFilter
+from components.filter import IntentFilter
 
 import json
 import sys

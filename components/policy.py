@@ -40,24 +40,22 @@ class SimplePolicy(Component):
 
     def __call__(self, state, *args, **kwargs):
         result = []
-        print(state)
         for s in state:
             result.append(self._perform_action(s))
-        print(result)
-        response, state = zip(*result)
+        response, confidence, state = zip(*result)
         if isinstance(state, tuple):
             state = [state[0]]
         self.dst.state = state
         logger.debug(f"Final state: {self.dst.state}")
-        return zip(*response)
+        return zip(*result)
 
     def _perform_action(self, state):
         s = defaultdict(list)
         s.update(state)
         for condition, action in self.policy:
             if condition(s):
-                response, state = action(s)
+                response, confidence, state = action(s)
                 if response is not None:
-                    return response, state
+                    return response, confidence, state
 
 

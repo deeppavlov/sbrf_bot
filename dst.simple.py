@@ -37,5 +37,6 @@ def get():
     return {
         'FILL_SLOT': dst_fill_slot,
         'FILL_SLOT_YES_NO': dst_fill_slot_yes_no,
-        'DEFAULT': dst_default
+        'DEFAULT': dst_default,
+        "TERMINATE": dst_default
     }

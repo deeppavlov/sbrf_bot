@@ -74,17 +74,18 @@ class SimpleDST(Component):
 
     def _update_state(self, state, params):
         new_state = state
+        cmd = []
         if '__COMMANDS__' in state:
             cmd = copy.deepcopy(state['__COMMANDS__'])
             del state['__COMMANDS__']
-        else:
+        if not cmd:
             cmd = [{'command': 'DEFAULT'}]
 
         p = defaultdict(list)
         p.update(params)
 
         for c in cmd:
-            print(f'Execute command {c}')
+            logger.debug(f'Execute command {c}')
             new_state = self.commands[c['command']](c, new_state, p)
 
         return new_state

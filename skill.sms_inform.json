@@ -2,7 +2,7 @@
   "deeppavlov_root": ".",
   "chainer": {
     "in": ["text"],
-    "out": ["response", "confidence"],
+    "out": ["response", "confidence", "final_state"],
     "pipe": [
       {
         "name": "slotfill_raw",
@@ -18,14 +18,14 @@
         "id": "dst",
         "in": ["slots"],
         "out": ["state"],
-        "commands": "./dst.sms_inform.py"
+        "commands": "./dst.simple.py"
       },
       {
         "name": "simple_policy",
         "dst": "#dst",
         "policy": "./policy.sms_inform.py",
         "in": ["state"],
-        "out": ["response", "confidence"]
+        "out": ["response", "confidence", "final_state"]
       }
     ]
   },
