@@ -6,13 +6,14 @@ logger = get_logger(__name__)
 
 
 class IntentFilter(Component):
-    def __init__(self, intents, clf, default_intent=0, *args, **kwargs):
+    def __init__(self, intents, clf, default_intent=0, always_open=[], *args, **kwargs):
         self.intents = intents
         self.size = len(intents)
         self.clf = clf
         self.default_intent = default_intent
         self.max_batch_size = 128
         self.intent_idxs = [default_intent]*self.max_batch_size
+        self.always_open = always_open
 
     def __call__(self, agent, utterances, batch_history):
         result = [[False] * self.size] * len(utterances)
@@ -31,5 +32,7 @@ class IntentFilter(Component):
                 self.intent_idxs[i] = self.intents.index(clf_result[i]["intent"])
                 logger.debug(f"Intent index: {self.intent_idxs[i]}")
             result[i][self.intent_idxs[i]] = True
+            for k in self.always_open:
+                result[i][k] = True
         logger.info(f"Filter result: {result}")
         return result
