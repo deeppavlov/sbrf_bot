@@ -83,13 +83,13 @@ def provide_info_for_reservation(s):
 def ask_slot(state, params):
     confidence = 1.0
     if params['slot'] == 'currency':
-        state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'currency'})
+        state['__COMMANDS__'].append({'command': 'UPDATE_SLOTS', 'slot': 'currency'})
         return "В какой валюте вы бы хотели открыть счет?", confidence, state
     elif params['slot'] == 'intent':
-        state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'intent'})
+        state['__COMMANDS__'].append({'command': 'UPDATE_SLOTS', 'slot': 'intent'})
         return "Уточните: вы хотите открыть или зарезервировать счет?", confidence, state
     elif params['slot'] == 'properties':
-        state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'properties'})
+        state['__COMMANDS__'].append({'command': 'UPDATE_SLOTS', 'slot': 'properties'})
         if state["intent"][0] == "RESERVE_ACCOUNT":
             return f"Какая информация вас интересует: тарифы, комплект документов, анкета или процедура открытия?", \
                    confidence, state
@@ -99,15 +99,15 @@ def ask_slot(state, params):
         else:
             return "Упс, не знаю как и спросить :(", confidence, state
     elif params['slot'] == 'resident':
-        state['__COMMANDS__'].append({'command': 'FILL_SLOT_YES_NO', 'slot': 'resident',
+        state['__COMMANDS__'].append({'command': 'UPDATE_SLOTS_YES_NO', 'slot': 'resident',
                                       'yes': 'RESIDENT', 'no': 'NO_RESIDENT'})
         return "Уточните, являетесь резидентом или нерезидентом?", confidence, state
     elif params['slot'] == 'client_type':
-        state['__COMMANDS__'].append({'command': 'FILL_SLOT_YES_NO', 'slot': 'client_type',
+        state['__COMMANDS__'].append({'command': 'UPDATE_SLOTS_YES_NO', 'slot': 'client_type',
                                       'yes': 'INDIVIDUAL', 'no': 'ORGANIZATION'})
         return "Уточните, вы являетесь физическим или юридическим лицом?", confidence, state
     elif params['slot'] == 'account_type':
-        state['__COMMANDS__'].append({'command': 'FILL_SLOT', 'slot': 'account_type'})
+        state['__COMMANDS__'].append({'command': 'UPDATE_SLOTS', 'slot': 'account_type'})
         return "Уточните, какой тип счета вы хотите зарезервировать (р/с, ГОЗ, и т.п.)?", confidence, state
     else:
         return ("Упс, не знаю как и спросить про [%s] :(" % params['slot']), confidence, state

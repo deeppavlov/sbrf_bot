@@ -16,6 +16,12 @@ def dst_fill_slot(c, s, p):
     return s
 
 
+def dst_update_slots(c, s, p):
+    p = clear_dunder_slots(p)
+    s.update(p)
+    return s
+
+
 def dst_default(c, s, p):
     s.clear()
     p = clear_dunder_slots(p)
@@ -33,8 +39,19 @@ def dst_fill_slot_yes_no(c, s, p):
     return s
 
 
+def dst_update_slots_yes_no(c, s, p):
+    slot = c['slot']
+    p = clear_dunder_slots(p, ["yes_no"])
+    s.update(p)
+    if not p[slot] and p['__yes_no__']:
+        s[slot] = c[p['__yes_no__'][0].lower()]
+    return s
+
+
 def get():
     return {
+        'UPDATE_SLOTS_YES_NO': dst_update_slots_yes_no,
+        'UPDATE_SLOTS': dst_update_slots,
         'FILL_SLOT': dst_fill_slot,
         'FILL_SLOT_YES_NO': dst_fill_slot_yes_no,
         'DEFAULT': dst_default,
