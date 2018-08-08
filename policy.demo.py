@@ -113,8 +113,14 @@ def ask_slot(state, params):
         return ("Упс, не знаю как и спросить про [%s] :(" % params['slot']), confidence, state
 
 
+def update_slot(state, slot, value):
+    state[slot]=value
+    return None, None, state
+
+
 def get():
     return [
+        (lambda s: "OPEN_ACCOUNT" in s["intent"] and "RESERVE_ACCOUNT" in s["intent"], lambda s: update_slot(s, 'intent', ['RESERVE_ACCOUNT'])),
         (lambda s: not s["intent"] and not s["properties"], lambda s: ask_slot(s, {'slot': 'intent'})),
         (lambda s: not s["intent"] and s["properties"], lambda s: ask_slot(s, {'slot': 'intent'})),
         (lambda s: "OPEN_ACCOUNT" in s["intent"] and not s["properties"], lambda s: ask_slot(s, {'slot': 'properties'})),
