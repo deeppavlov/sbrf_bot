@@ -27,9 +27,11 @@ def init_agent():
         confidence=0.5
     )
 
-    intents = ['HELLO', 'DEMO', 'SMS_INFORM', 'TARIFS', 'FAQ']
+    knn_clf = build_model_from_config(json.load(open('knn_classifier.json')), as_component=True)
 
-    filter = IntentFilter(intents, classifier, default_intent=0, always_open=[0, 4])
+    intents = ['OTHER', 'OPEN_ACCOUNT', 'SMS_INFORM', 'RATES', 'FAQ']
+
+    filter = IntentFilter(intents, knn_clf, default_intent=0, always_open=[0])
 
     agent = Agent([hello, demo, sms_inform, tarifs, faq], skills_selector=HighestConfidenceSelector(), skills_filter=filter)
 

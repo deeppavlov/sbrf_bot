@@ -1,11 +1,11 @@
 def get_product_info(s):
     s['__COMMANDS__'].append({'command': 'TERMINATE'})
-    return f"Тарифы на обслуживание для продукта {s['product']} вы можете узнать по ссылке ...", 1.0, s
+    return f"Тарифы на обслуживание пакета {s['product']} вы можете узнать по ссылке https://www.sberbank.ru/ru/s_m_business/bankingservice/rko/tariffs", 1.0, s
 
 
 def get_service_info(s):
     s['__COMMANDS__'].append({'command': 'TERMINATE'})
-    return f"Тарифы на обслуживание для услуги {s['service']} вы можете узнать по ссылке ...", 1.0, s
+    return f"Тарифы на обслуживание для услуги {s['service']} вы можете узнать по ссылке https://www.sberbank.ru/ru/s_m_business/bankingservice/rko/tariffs", 1.0, s
 
 
 def ask_slot(state, params):
