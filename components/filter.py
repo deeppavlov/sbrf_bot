@@ -28,7 +28,8 @@ class IntentFilter(Component):
                     if self.intent_idxs[i] == j:
                         logger.debug("Intet {j} is terminated. Reset current intent from {j} to {self.default_intent}")
                         self.intent_idxs[i] = self.default_intent
-            self.intent_idxs[i] = self.intents.index(intents[i])
+            if (self.intent_idxs[i] == self.default_intent) or (self.intent_idxs[i] == self.intents.index('FAQ')):
+                self.intent_idxs[i] = self.intents.index(intents[i])
             logger.debug(f"Intent index: {self.intent_idxs[i]}")
             result[i][self.intent_idxs[i]] = True
             for k in self.always_open:
