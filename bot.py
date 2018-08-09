@@ -1,3 +1,4 @@
+import os
 import threading
 import requests
 from queue import Queue
@@ -20,6 +21,14 @@ class Bot(Thread):
         self.access_info = {}
         self.http_sessions = {}
         self.input_queue = input_queue
+
+        ms_id = os.getenv('MS_APP_ID')
+        if ms_id:
+            self.config['ms_bot_framework_defaults']['auth_app_id'] = ms_id
+
+        ms_secret = os.getenv('MS_APP_SECRET')
+        if ms_secret:
+            self.config['ms_bot_framework_defaults']['auth_app_secret'] = ms_secret
 
         self._request_access_info()
         polling_interval = self.config['ms_bot_framework_defaults']['auth_polling_interval']
