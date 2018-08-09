@@ -1,0 +1,48 @@
+{
+  "chainer": {
+    "in": "q",
+    "pipe": [
+      {
+        "name": "ru_tokenizer",
+        "in": "q",
+        "lemmas": true,
+        "out": "q_token_lemmas"
+      },
+      {
+        "id": "vectorizer",
+        "name": "tfidf_vectorizer",
+        "in": "q_token_lemmas",
+        "fit_on": ["q_token_lemmas"],
+        "save_path": "sbrf_demo/vectorizer_pretrained_tfidf.pkl",
+        "load_path": "sbrf_demo/vectorizer_pretrained_tfidf.pkl",
+        "out": "q_vect"
+      },
+      {
+        "name": "demo_clf",
+        "in": "q_vect",
+        "save_path": "sbrf_demo/clf_pretrained_knn.pkl",
+        "load_path": "sbrf_demo/clf_pretrained_knn.pkl",
+        "out": ["answer", "score", "state"]
+      }
+    ],
+    "out": ["answer", "score", "state"]
+  },
+
+  "metadata": {
+    "imports": ["components.tfidf_vectorizer", "components.demo_clf"],
+    "download": [
+      {
+        "url": "http://lnsigo.mipt.ru/export/sbrf_demo/clf_pretrained_knn.pkl",
+        "subdir": "sbrf_demo"
+      },
+      {
+        "url": "http://lnsigo.mipt.ru/export/sbrf_demo/vectorizer_pretrained_tfidf.pkl",
+        "subdir": "sbrf_demo"
+      }
+    ]
+  }
+
+}
+
+
+

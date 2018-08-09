@@ -17,8 +17,8 @@ class IntentFilter(Component):
 
     def __call__(self, agent, utterances, batch_history):
         result = [[False] * self.size] * len(utterances)
-        clf_result = self.clf(utterances)
-        logger.debug(f"Intent from classifier: {clf_result}")
+        intents, scores, _ = self.clf(utterances)
+        logger.debug(f"Intent from classifier: {intents}")
         states = agent.states
         for i in range(len(utterances)):
             skills_state = states[i]
@@ -28,9 +28,8 @@ class IntentFilter(Component):
                     if self.intent_idxs[i] == j:
                         logger.debug("Intet {j} is terminated. Reset current intent from {j} to {self.default_intent}")
                         self.intent_idxs[i] = self.default_intent
-            if "intent" in clf_result[i]:
-                self.intent_idxs[i] = self.intents.index(clf_result[i]["intent"])
-                logger.debug(f"Intent index: {self.intent_idxs[i]}")
+            self.intent_idxs[i] = self.intents.index(intents[i])
+            logger.debug(f"Intent index: {self.intent_idxs[i]}")
             result[i][self.intent_idxs[i]] = True
             for k in self.always_open:
                 result[i][k] = True

@@ -17,6 +17,8 @@ faq = build_model_from_config(json.load(open('skill.faq.json')), as_component=Tr
 
 classifier = build_model_from_config(json.load(open('intent_classifier.json')), as_component=True)
 
+knn_clf = build_model_from_config(json.load(open('knn_classifier.json')), as_component=True)
+
 hello = RandomResponseSkill(
     responses=[
         'Привет! Чем могу помочь?',
@@ -26,9 +28,9 @@ hello = RandomResponseSkill(
     confidence=0.5
 )
 
-intents = ['HELLO', 'DEMO', 'SMS_INFORM', 'TARIFS', 'FAQ']
+intents = ['OTHER', 'OPEN_ACCOUNT', 'SMS_INFORM', 'RATES', 'FAQ']
 
-filter = IntentFilter(intents, classifier, default_intent=0, always_open=[0, 4])
+filter = IntentFilter(intents, knn_clf, default_intent=0, always_open=[0])
 
 agent = Agent([hello, demo, sms_inform, tarifs, faq], skills_selector=HighestConfidenceSelector(), skills_filter=filter)
 
