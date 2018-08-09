@@ -47,17 +47,14 @@
     "imports": ["components.tfidf_vectorizer", "components.faq_cos"],
     "download": [
       {
-        "url": "http://lnsigo.mipt.ru/export/faq/pretrained/faq_pretrained_model_v2.pkl",
+        "url": "ftp://share.ipavlov.mipt.ru/datasets/faq/faq_pretrained_model_v2.pkl",
         "subdir": "autofaq"
       },
       {
-        "url": "http://lnsigo.mipt.ru/export/faq/pretrained/faq_vectorizer_pretrained_tfidf_v2.pkl",
+        "url": "ftp://share.ipavlov.mipt.ru/datasets/faq/faq_vectorizer_pretrained_tfidf_v2.pkl",
         "subdir": "autofaq"
       }
     ]
   }
 
 }
-
-
-
