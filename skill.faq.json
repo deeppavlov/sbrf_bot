@@ -23,16 +23,16 @@
         "name": "tfidf_vectorizer",
         "in": "q_token_lemmas",
         "fit_on": ["q_token_lemmas"],
-        "save_path": "autofaq/faq_vectorizer_pretrained_tfidf.pkl",
-        "load_path": "autofaq/faq_vectorizer_pretrained_tfidf.pkl",
+        "save_path": "autofaq/faq_vectorizer_pretrained_tfidf_v2.pkl",
+        "load_path": "autofaq/faq_vectorizer_pretrained_tfidf_v2.pkl",
         "out": "q_vect"
       },
       {
         "name": "faq_cos_model",
         "in": "q_vect",
         "fit_on": ["q_vect", "y"],
-        "save_path": "autofaq/faq_pretrained_model.pkl",
-        "load_path": "autofaq/faq_pretrained_model.pkl",
+        "save_path": "autofaq/faq_pretrained_model_v2.pkl",
+        "load_path": "autofaq/faq_pretrained_model_v2.pkl",
         "out": ["answer", "score", "state"]
       }
     ],
@@ -47,11 +47,11 @@
     "imports": ["components.tfidf_vectorizer", "components.faq_cos"],
     "download": [
       {
-        "url": "http://lnsigo.mipt.ru/export/faq/pretrained/faq_pretrained_model.pkl",
+        "url": "http://lnsigo.mipt.ru/export/faq/pretrained/faq_pretrained_model_v2.pkl",
         "subdir": "autofaq"
       },
       {
-        "url": "http://lnsigo.mipt.ru/export/faq/pretrained/faq_vectorizer_pretrained_tfidf.pkl",
+        "url": "http://lnsigo.mipt.ru/export/faq/pretrained/faq_vectorizer_pretrained_tfidf_v2.pkl",
         "subdir": "autofaq"
       }
     ]
