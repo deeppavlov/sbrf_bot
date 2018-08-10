@@ -4,11 +4,14 @@ from urllib.parse import urljoin
 from deeppavlov.core.common.log import get_logger
 from agent import init_agent
 
+REINIT_MESSAGE = 'Чем Вам помочь?'
+
 log = get_logger(__name__)
 
 
 class Conversation:
-    def __init__(self, bot, activity: dict):
+    def __init__(self, bot, key, activity: dict):
+        self.key = key
         self.model = init_agent()
         self.bot = bot
         self.bot_id = activity['recipient']['id']
@@ -33,6 +36,16 @@ class Conversation:
 
         if activity_type in self.handled_activities.keys():
             self.handled_activities[activity_type](activity)
+
+    def _infer_model(self, observation: list):
+        try:
+            prediction = self.model(observation)
+        except Exception:
+            self.model = None
+            self.model = init_agent()
+            prediction = ['Чем Вам помочь?']
+        return prediction
+
 
     def _send_activity(self, url: str, out_activity: dict):
         authorization = f"{self.bot.access_info['token_type']} {self.bot.access_info['access_token']}"
@@ -92,6 +105,6 @@ class Conversation:
     def _handle_message(self, in_activity: dict):
         if 'text' in in_activity.keys():
             in_text = in_activity['text']
-            pred = self.model([in_text])
+            pred = self._infer_model([in_text])
             out_text = str(pred[0])
             self._send_message(out_text, in_activity)
