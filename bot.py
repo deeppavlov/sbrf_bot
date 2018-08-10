@@ -7,7 +7,6 @@ from requests.exceptions import HTTPError
 
 from deeppavlov.core.common.log import get_logger
 from conversation import Conversation
-from agent import init_agent
 
 log = get_logger(__name__)
 
@@ -16,7 +15,6 @@ class Bot(Thread):
     def __init__(self, config: dict, input_queue: Queue):
         super(Bot, self).__init__()
         self.config = config
-        self.model = self._init_model()
         self.conversations = {}
         self.access_info = {}
         self.http_sessions = {}
@@ -39,10 +37,6 @@ class Bot(Thread):
         while True:
             activity = self.input_queue.get()
             self._handle_activity(activity)
-
-    def _init_model(self):
-        model = init_agent()
-        return model
 
     def _update_access_info(self):
         polling_interval = self.config['ms_bot_framework_defaults']['auth_polling_interval']

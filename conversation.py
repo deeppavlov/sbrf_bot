@@ -2,12 +2,14 @@ import requests
 from urllib.parse import urljoin
 
 from deeppavlov.core.common.log import get_logger
+from agent import init_agent
 
 log = get_logger(__name__)
 
 
 class Conversation:
     def __init__(self, bot, activity: dict):
+        self.model = init_agent()
         self.bot = bot
         self.bot_id = activity['recipient']['id']
         self.bot_name = activity['recipient']['name']
@@ -90,6 +92,6 @@ class Conversation:
     def _handle_message(self, in_activity: dict):
         if 'text' in in_activity.keys():
             in_text = in_activity['text']
-            pred = self.bot.model([in_text])
+            pred = self.model([in_text])
             out_text = str(pred[0])
             self._send_message(out_text, in_activity)
