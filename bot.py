@@ -69,8 +69,11 @@ class Bot(Thread):
         conversation_key = f"{activity['channelId']}||{activity['conversation']['id']}"
 
         if conversation_key not in self.conversations.keys():
-            self.conversations[conversation_key] = Conversation(self, activity)
+            self.conversations[conversation_key] = Conversation(self, conversation_key, activity)
             log.info(f'Created new conversation {conversation_key}')
 
         conversation = self.conversations[conversation_key]
         conversation.handle_activity(activity)
+
+    def delete_conversation(self, conversation_key):
+        del self.conversations[conversation_key]
